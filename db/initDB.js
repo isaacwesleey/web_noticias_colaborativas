@@ -36,8 +36,6 @@ async function main() {
             FOREIGN KEY (user_id) REFERENCES users(id)
         )
     `);
-
-    console.log('Tablas creadas');
   } catch (error) {
     console.error(error);
   } finally {

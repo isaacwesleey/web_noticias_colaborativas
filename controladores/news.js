@@ -5,6 +5,7 @@
 'use strict';
 
 const { generateError } = require('../helpers');
+
 const {
   createNewsDB,
   getNewByIdDB,

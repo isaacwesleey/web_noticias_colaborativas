@@ -1,7 +1,14 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////// Archivo principal del servidor, donde se ejecuta el servidor ////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+'use strict';
+
 require('dotenv').config();
 
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 
 const {
   news,
@@ -19,12 +26,13 @@ const {
 } = require('./controladores/users');
 
 const { authUser } = require('./middlewares/auth');
-const { checkNewsOwnership } = require('./middlewares/author');
+const { checkNewsOwnership } = require('./middlewares/verify');
 
 const { PORT } = process.env;
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 
