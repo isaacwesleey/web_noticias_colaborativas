@@ -9,13 +9,11 @@ const checkNewsOwnership = async (req, res, next) => {
 
     // obtiene la noticia de la base de datos
     const news = await getNewByIdDB(id);
-    console.log(news);
 
     if (!news) {
       throw generateError(`La noticia con id ${id} no existe`, 404);
     }
-    console.log(req.auth.id);
-    console.log(news.user_id);
+
     // verifica que el usuario que creó la noticia es el mismo que el usuario autenticado
     if (news.user_id !== req.auth.id) {
       throw generateError('No tienes permiso para editar esta noticia', 401);

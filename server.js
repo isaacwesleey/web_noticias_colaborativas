@@ -43,7 +43,7 @@ app.post('/', authUser, newNews); // crear noticia
 app.get('/', news); // últimas noticias
 app.get('/new/:id', newById); // info noticia
 app.patch('/new/:id', authUser, checkNewsOwnership, editNews); // editar noticia
-app.delete('/new/:id', authUser, deleteNews); // borrar noticia
+app.delete('/new/:id', authUser, checkNewsOwnership, deleteNews); // borrar noticia
 
 // middleware de los errores
 app.use((error, req, res, next) => {
