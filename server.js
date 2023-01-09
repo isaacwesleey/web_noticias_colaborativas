@@ -6,8 +6,9 @@ const morgan = require('morgan');
 const {
   news,
   newNews,
-  searchNews,
   deleteNews,
+  newById,
+  editNews,
 } = require('./controladores/news');
 
 const {
@@ -18,6 +19,7 @@ const {
 } = require('./controladores/users');
 
 const { authUser } = require('./middlewares/auth');
+const { checkNewsOwnership } = require('./middlewares/author');
 
 const { PORT } = process.env;
 
@@ -37,10 +39,11 @@ app.post('/login', loginUser); // login usuario
 app.patch('/user/:id', authUser, editUser); // editar usuario
 
 // Rutas de noticias
-app.post('/', authUser, newNews);
-app.get('/', news);
-app.get('/noticias/:id', searchNews);
-app.delete('/noticias/:id', authUser, deleteNews);
+app.post('/', authUser, newNews); // crear noticia
+app.get('/', news); // últimas noticias
+app.get('/new/:id', newById); // info noticia
+app.patch('/new/:id', authUser, checkNewsOwnership, editNews); // editar noticia
+app.delete('/new/:id', authUser, deleteNews); // borrar noticia
 
 // middleware de los errores
 app.use((error, req, res, next) => {

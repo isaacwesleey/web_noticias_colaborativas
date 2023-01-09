@@ -5,21 +5,102 @@
 const { getConnection } = require('./db');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////// Login ///////////////////////////////////////////////
+////////////////////////////////////////// Crear noticia ///////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const createNewsDB = async (title, content, lede, theme) => {
+const createNewsDB = async ({ user_id, title, content, lede, theme }) => {
   const connection = await getConnection();
 
   try {
     const [result] = await connection.query(
-      'INSERT INTO news (title, content, lede, theme) VALUES (?, ?, ?, ?)',
-      [title, content, lede, theme]
+      'INSERT INTO news (user_id, title, content, lede, theme) VALUES (?, ?, ?, ?, ?)',
+      [user_id, title, content, lede, theme]
     );
 
-    return result.insertId; // Devuelve el id de la noticia creada
+    return result;
   } finally {
     connection.release();
   }
 };
-module.exports = { createNewsDB };
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// Editar noticia ///////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const editNewsDB = async (id, title, content, lede, theme) => {
+  const connection = await getConnection();
+
+  try {
+    const [result] = await connection.query(
+      'UPDATE news SET title = ?, content = ?, lede = ?, theme = ? WHERE id = ?',
+      [title, content, lede, theme, id]
+    );
+
+    return result;
+  } finally {
+    connection.release();
+  }
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////// Últimas noticias ///////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const getNewsDB = async () => {
+  const connection = await getConnection();
+
+  try {
+    const [result] = await connection.query(
+      'SELECT id, title, content, lede, theme, created_at FROM news ORDER BY created_at DESC LIMIT 10'
+    );
+
+    return result;
+  } finally {
+    connection.release();
+  }
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////// Noticia ///////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const getNewByIdDB = async (id) => {
+  const connection = await getConnection();
+
+  try {
+    const [result] = await connection.query(
+      'SELECT id, user_id, title, content, lede, theme, created_at FROM news WHERE id = ?',
+      [id]
+    );
+
+    return result[0];
+  } finally {
+    connection.release();
+  }
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////// Borrar noticia ///////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const deleteNewsDB = async (id) => {
+  const connection = await getConnection();
+
+  try {
+    const [result] = await connection.query('DELETE FROM news WHERE id = ?', [
+      id,
+    ]);
+
+    return result;
+  } finally {
+    connection.release();
+  }
+};
+
+module.exports = {
+  createNewsDB,
+  getNewsDB,
+  getNewByIdDB,
+  deleteNewsDB,
+  editNewsDB,
+};
