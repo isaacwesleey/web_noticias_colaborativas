@@ -66,7 +66,7 @@ const getNewsDB = async () => {
 //////////////////////////////////////////// Noticia ///////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const getNewByIdDB = async (id) => {
+const getNewsByIdDB = async (id) => {
   const connection = await getConnection();
 
   try {
@@ -102,7 +102,7 @@ const deleteNewsDB = async (id) => {
 module.exports = {
   createNewsDB,
   getNewsDB,
-  getNewByIdDB,
+  getNewsByIdDB,
   deleteNewsDB,
   editNewsDB,
 };

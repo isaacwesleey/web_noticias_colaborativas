@@ -7,8 +7,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { generateError } = require('../helpers');
-const { createUserDB, infoUserDB, getUserByEmail } = require('../db/users');
-const { editUserDB } = require('../db/users');
+const { createUserDB, infoUserDB, getUserByEmail } = require('../../db/users');
+const { editUserDB } = require('../../db/users');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////// Crear Usuario ///////////////////////////////////////////
@@ -44,7 +44,13 @@ const infoUser = async (req, res, next) => {
 
     const user = await infoUserDB(id);
 
-    res.send({
+    // El usuario solo puede ver su propia información (no la de otros usuarios)
+
+    if (req.auth.id !== Number(id)) {
+      throw generateError('No tienes permisos para ver esta información', 403);
+    }
+
+    res.status(200).send({
       status: 'ok',
       data: user,
     });
@@ -98,7 +104,13 @@ const editUser = async (req, res, next) => {
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
-      throw generateError('Faltan campos', 400);
+      throw new Error('Missing fields');
+    }
+    console.log(req.auth.id);
+    console.log(Number(id));
+    // El usuario solo puede editar su propia información
+    if (req.auth.id !== Number(id)) {
+      throw new Error('Unauthorized access');
     }
 
     const user = await editUserDB(id, name, email, password);

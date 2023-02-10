@@ -3,7 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const bcrypt = require('bcrypt');
-const { generateError } = require('../helpers');
+const { generateError } = require('../src/helpers');
 const { getConnection } = require('./db');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -100,10 +100,12 @@ const editUserDB = async (id, email, name) => {
     );
 
     if (result.affectedRows === 0) {
-      throw generateError(`Usuario no encontrado`, 404);
+      throw new Error(`User not found`);
     }
 
     return result;
+  } catch (error) {
+    throw new Error(`Error updating user information: ${error.message}`);
   } finally {
     if (connection) connection.release();
   }

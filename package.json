@@ -1,14 +1,14 @@
 {
-  "name": "proyecto",
+  "name": "Rest API with NodeJS and MySQL",
   "version": "1.0.0",
-  "description": "Simple API",
-  "main": "main.js",
+  "description": "Rest API with NodeJS and MySQL with JWT Authentication and Authorization with MySQL Database",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "init-db": "node ../db/db.js",
-    "dev": "nodemon server.js"
+    "init-db": "node db/db.js",
+    "dev": "nodemon src/server.js"
   },
-  "author": "",
+  "author": "Isaac Wesley",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^8.31.0",

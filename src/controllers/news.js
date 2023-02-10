@@ -8,10 +8,10 @@ const { generateError } = require('../helpers');
 
 const {
   createNewsDB,
-  getNewByIdDB,
+  getNewsByIdDB,
   getNewsDB,
   editNewsDB,
-} = require('../db/news');
+} = require('../../db/news.js');
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////// Últimas noticias /////////////////////////////////////////
@@ -62,7 +62,7 @@ const deleteNews = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const news = await getNewByIdDB(id);
+    const news = await getNewsByIdDB(id);
 
     if (!news) {
       throw generateError(`La noticia con id ${id} no existe`, 404);
@@ -90,7 +90,7 @@ const editNews = async (req, res, next) => {
       throw generateError('Faltan datos', 400);
     }
 
-    const news = await getNewByIdDB(id);
+    const news = await getNewsByIdDB(id);
 
     if (!news) {
       throw generateError(`La noticia con id ${id} no existe`, 404);
@@ -111,11 +111,11 @@ const editNews = async (req, res, next) => {
 ////////////////////////////////////////////// Noticia /////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const newById = async (req, res, next) => {
+const newsById = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const news = await getNewByIdDB(id);
+    const news = await getNewsByIdDB(id);
 
     if (!news) {
       throw generateError(`La noticia con id ${id} no existe`, 404);
@@ -138,6 +138,6 @@ module.exports = {
   news,
   newNews,
   deleteNews,
-  newById,
+  newsById,
   editNews,
 };

@@ -14,19 +14,19 @@ const {
   news,
   newNews,
   deleteNews,
-  newById,
+  newsById,
   editNews,
-} = require('./controladores/news');
+} = require('../src/controllers/news');
 
 const {
   createUser,
   infoUser,
   loginUser,
   editUser,
-} = require('./controladores/users');
+} = require('../src/controllers/users');
 
-const { authUser } = require('./middlewares/auth');
-const { checkNewsOwnership } = require('./middlewares/verify');
+const { authUser } = require('../src/middlewares/authentication');
+const { checkNewsOwnership } = require('../src/middlewares/authorization');
 
 const { PORT } = process.env;
 
@@ -49,9 +49,9 @@ app.patch('/user/:id', authUser, editUser); // editar usuario
 // Rutas de noticias
 app.post('/', authUser, newNews); // crear noticia
 app.get('/', news); // últimas noticias
-app.get('/new/:id', newById); // info noticia
-app.patch('/new/:id', authUser, checkNewsOwnership, editNews); // editar noticia
-app.delete('/new/:id', authUser, checkNewsOwnership, deleteNews); // borrar noticia
+app.get('/news/:id', newsById); // info noticia
+app.patch('/news/:id', authUser, checkNewsOwnership, editNews); // editar noticia
+app.delete('/news/:id', authUser, checkNewsOwnership, deleteNews); // borrar noticia
 
 // middleware de los errores
 app.use((error, req, res, next) => {
